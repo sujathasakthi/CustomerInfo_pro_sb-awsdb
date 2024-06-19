@@ -14,6 +14,21 @@ class CustomerRepo2  @Autowired constructor (
     fun save(customerInfo: CustomerInfo) {
         return dynamoDBMapper.save(customerInfo)
     }
+    fun update(customerInfo: CustomerInfo): CustomerInfo {
+        dynamoDBMapper.save(customerInfo)
+        return customerInfo
+    }
+    fun delete(id: String) {
+
+        val customer = dynamoDBMapper.load(CustomerInfo::class.java, id)
+        if (customer != null) {
+
+            dynamoDBMapper.delete(customer)
+        } else {
+            throw IllegalArgumentException("Customer with ID $id does not exist.")
+        }
+
+    }
 
     fun getById(id: String): CustomerInfo? {
         return dynamoDBMapper.load(CustomerInfo::class.java, id)
@@ -26,21 +41,7 @@ class CustomerRepo2  @Autowired constructor (
         return scanResult
     }
 
-    fun update(customer: String, CustomerInfo: Any?): String {
-        dynamoDBMapper.save(customer)
-        return customer
-    }
-
-    fun delete(id: String) {
-
-        val customer = dynamoDBMapper.load(CustomerInfo::class.java, id)
-        if (customer != null) {
-
-            dynamoDBMapper.delete(customer)
-        } else {
-            throw IllegalArgumentException("Customer with ID $id does not exist.")
-        }
 
 
-    }
+
 }
